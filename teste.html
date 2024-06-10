@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste para Boiolas</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jdan/98.css/98.css">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #dda8b0; /* Cor de fundo modificada */
+        font-family: Arial, sans-serif; /* Fonte padrão do Windows 98 */
+        background-image: url('https://win98icons.alexmeub.com/icons/size/16x16/Shell32_icons/ico14.ico');
+        background-repeat: repeat;
+    }
+    .window {
+        width: 400px;
+        height: 300px;
+        background-color: #c6838c; /* Cor da janela do Windows 98 */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 2px solid #000; /* Cor da borda da janela */
+        padding: 20px;
+    }
+    .title-bar {
+        background-color: #281a1a; /* Cor da barra de título do Windows 98 */
+        padding: 5px;
+        cursor: default;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .title {
+        color: #FFFFFF; /* Cor do texto do título */
+        margin: 0;
+    }
+    .close-button-container {
+        background-color: #70454e; /* Cor de fundo da caixa do botão de fechar */
+        padding: 5px;
+        border-radius: 3px;
+    }
+    .close-button {
+        cursor: pointer;
+        background-color: inherit;
+        border: none;
+        color: inherit;
+        font-size: inherit;
+        padding: inherit;
+        display: flex;
+        align-items: center;
+    }
+    .close-button:hover {
+        background-color: #FF0000; /* Cor de fundo do botão de fechar ao passar o mouse */
+    }
+    .close-button:hover .close-button-container {
+        background-color: #FF0000; /* Cor de fundo da caixa do botão de fechar ao passar o mouse */
+    }
+    .content {
+        margin-top: 20px;
+        color: #000000; /* Cor do texto do conteúdo */
+    }
+    .buttons {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .button {
+        padding: 10px 20px;
+        background-color: #87555c; /* Cor do botão do Windows 98 */
+        color: #FFFFFF; /* Cor do texto do botão */
+        cursor: pointer;
+        border: 1px solid #000; /* Cor da borda do botão */
+        margin-right: 10px;
+        display: inline-block;
+    }
+    .button:hover {
+        background-color: #FFFFFF; /* Cor de fundo do botão ao passar o mouse */
+        color: #281a1a; /* Cor do texto do botão ao passar o mouse */
+    }
+    
+    /* Estilos da caixa de diálogo */
+    .dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #c6838c; /* Mesma cor da janela */
+        border: 2px solid #000; /* Mesma cor da borda */
+        padding: 20px;
+        z-index: 9999; /* Garante que a caixa de diálogo esteja sempre acima de outros elementos */
+        display: none; /* Inicia oculta */
+    }
+    
+    .dialog p {
+        color: #FFFFFF; /* Mesma cor do texto do título */
+        margin: 0;
+    }
+</style>
+</head>
+<body>
+<div class="window">
+    <div class="title-bar">
+        <p class="title">Isso é um teste para boiolas</p>
+        <div class="close-button-container">
+            <div class="close-button" id="close-button">&#x2716;</div>
+        </div>
+    </div>
+    <div class="content">
+        <p>Parabéns, você acaba de ser convocado para participar de um teste. De acordo com informações previamente coletadas, você possui o perfil perfeito para integrar o nosso time.</p>
+        <p>Você tem interesse em participar desse teste?</p>
+    </div>
+    <div class="buttons">
+        <div class="button" id="sim-button">Sim</div>
+        <div class="button" id="nao-button">Não</div>
+    </div>
+</div>
+
+<!-- Caixa de diálogo para "Opção não disponível" -->
+<div class="dialog" id="dialog-not-available">
+    <p>Opção não disponível</p>
+</div>
+
+<!-- Caixa de diálogo para "A única opção disponível é SIM" -->
+<div class="dialog" id="dialog-sim-only">
+    <p>A única opção disponível é SIM</p>
+</div>
+
+<script>
+    const closeButton = document.getElementById('close-button');
+    const dialogNotAvailable = document.getElementById('dialog-not-available');
+    const dialogSimOnly = document.getElementById('dialog-sim-only');
+    let counterNaoButton = 0;
+    
+    closeButton.addEventListener('click', function() {
+        // Exibir a caixa de diálogo "Opção não disponível"
+        dialogNotAvailable.style.display = 'block';
+        
+        // Ocultar a caixa de diálogo "Opção não disponível" após 1 segundo
+        setTimeout(function() {
+            dialogNotAvailable.style.display = 'none';
+        }, 1000);
+    });
+    
+    const naoButton = document.getElementById('nao-button');
+    
+    naoButton.style.position = 'relative';
+
+    window.addEventListener('mousemove', function(event) {
+        const rect = naoButton.getBoundingClientRect();
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        
+        const distance = Math.sqrt(
+            Math.pow(mouseX - (rect.left + rect.width / 2), 2) +
+            Math.pow(mouseY - (rect.top + rect.height / 2), 2)
+        );
+        
+        if (distance < 50) {
+            counterNaoButton++;
+            naoButton.style.left = Math.random() * 300 + 'px';
+            naoButton.style.top = Math.random() * 200 + 'px';
+            if (counterNaoButton === 5) {
+                // Exibir a caixa de diálogo "A única opção disponível é SIM"
+                dialogSimOnly.style.display = 'block';
+                
+                                // Ocultar a caixa de diálogo "A única opção disponível é SIM" após 1 segundo
+                setTimeout(function() {
+                    dialogSimOnly.style.display = 'none';
+                }, 1000);
+            }
+        }
+    });
+    
+    const simButton = document.getElementById('sim-button');
+    
+    simButton.addEventListener('click', function() {
+        // Redirecionar para outra página HTML
+        window.location.href = 'outra_pagina.html';
+    });
+</script>
+</body>
+</html>
+
